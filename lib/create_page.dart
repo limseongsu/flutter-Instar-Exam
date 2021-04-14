@@ -43,39 +43,32 @@ class _CreatePageState extends State<CreatePage> {
         IconButton(
           icon: Icon(Icons.send),
           onPressed: () {
-            _uploadPost();
+            _uploadPost(context);
           },
         )
       ],
     );
   }
 
-  void _uploadPost() {
+  Future<void> _uploadPost(BuildContext context) async {
     final firebaseStorageRef = FirebaseStorage.instance
         .ref()
-        .child('${DateTime.now().microsecondsSinceEpoch}.png');
-
-    final task = firebaseStorageRef.putFile(
-      _image, SettableMetadata(contentType: 'image/png'));
-
-    task.then((value) {
-      var downloadUrl = value.ref.getDownloadURL();
-
-      downloadUrl.then((uri){
-        var doc = FirebaseFirestore.instance.collection('post').doc();
-        doc.set({
-          'id': doc.id,
-          'photoUrl': uri.toString(),
-          'contents': textEditingController.text,
-          'email': widget.user.email,
-          'displayName': widget.user.displayName,
-          'userPhotoUrl': widget.user.photoURL
-        }).then((onValue){
-          Navigator.pop(context);
-
-        });
-      });
+        .child('post')
+        .child('${DateTime.now().millisecondsSinceEpoch}.png');
+    final task = await firebaseStorageRef.putFile(
+        _image, SettableMetadata(contentType: 'image/png'));
+    final uri = await task.ref.getDownloadURL();
+    final doc = FirebaseFirestore.instance.collection('post').doc();
+    await doc.set({
+      'id': doc.id,
+      'photoUrl': uri.toString(),
+      'contents': textEditingController.text,
+      'email': widget.user.email,
+      'displayName': widget.user.displayName,
+      'userPhotoUrl': widget.user.photoURL
     });
+    // 완료 후 앞 화면으로 이동
+    Navigator.pop(context);
   }
 
   Widget _buildBody() {
