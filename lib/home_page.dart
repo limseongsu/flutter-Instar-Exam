@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class HomePage extends StatelessWidget {
-  final FirebaseUser user;
+  final User user;
 
   HomePage(this.user);
 
@@ -49,7 +49,7 @@ class HomePage extends StatelessWidget {
                             width: 80.0,
                             height: 80.0,
                             child: CircleAvatar(
-                              backgroundImage: NetworkImage(user.photoUrl),
+                              backgroundImage: NetworkImage(user.photoURL),
                             ),
                           ),
                           Padding(padding: EdgeInsets.all(8.0)),

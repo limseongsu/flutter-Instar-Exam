@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_instar_examclone/tap_page.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,22 +22,24 @@ class LoginPage extends StatelessWidget {
               padding: EdgeInsets.all(50.0),
             ),
             SignInButton(Buttons.Google, onPressed: () {
-              _handleSingIn().then((user) {
-                print(user);
-              });
-            }),
+              _handleSignIn();
+            },
+            ),
           ],
         ),
       ),
     );
   }
 
-  Future<FirebaseUser> _handleSingIn() async {
+  Future<UserCredential> _handleSignIn() async {
     GoogleSignInAccount googleUser = await _googleSignIn.signIn();
     GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-    FirebaseUser user = await _auth.signInWithCredential(
-      GoogleAuthProvider.getCredential(idToken: googleAuth.idToken, accessToken: googleAuth.
-      accessToken));
-    return user;
+
+    final GoogleAuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 }

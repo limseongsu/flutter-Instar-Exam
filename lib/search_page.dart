@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_instar_examclone/detail_post_page.dart';
 
 class SearchPage extends StatefulWidget {
-  final FirebaseUser user;
+  final User user;
 
   SearchPage(this.user);
 
@@ -32,13 +32,13 @@ class _SearchPageState extends State<SearchPage> {
 
   Widget _buildBody() {
     return StreamBuilder(
-      stream: Firestore.instance.collection('post').snapshots(),
+      stream: FirebaseFirestore.instance.collection('post').snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if(!snapshot.hasData) {
           return Center(child: CircularProgressIndicator());
         }
 
-        var items = snapshot.data.documents ?? [];
+        var items = snapshot.data.docs ?? [];
 
         return GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

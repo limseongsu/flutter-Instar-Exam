@@ -2,6 +2,7 @@
     package="lss.flutter_instar_examclone">
    <application
         android:label="flutter_instar_examclone"
+       ndroid:requestLegacyExternalStorage="true"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

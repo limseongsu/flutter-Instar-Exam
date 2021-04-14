@@ -5,7 +5,7 @@ import 'package:flutter_instar_examclone/search_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class TabPage extends StatefulWidget {
-  final FirebaseUser user;
+  final User user;
 
 
   TabPage(this.user);
